@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberShield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#0a0a0a;--mute:#4a4a4a;--line:#0a0a0a;--soft:#e4e4e4;--panel:#f7f7f7}
+@media (prefers-color-scheme:dark){:root{--bg:#0a0a0a;--ink:#f5f5f5;--mute:#b0b0b0;--line:#f5f5f5;--soft:#2c2c2c;--panel:#141414}}
+*{box-sizing:border-box}
+html{scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.7 "Cormorant Garamond",Georgia,"Times New Roman",serif}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:700;line-height:1.25;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+/* masthead */
+header{background:var(--ink);color:var(--bg);text-align:center;padding:56px 0 48px;border-bottom:1px solid var(--bg);box-shadow:0 6px 0 var(--ink),0 8px 0 var(--bg)}
+header svg{width:58px;height:auto;display:block;margin:0 auto 18px}
+header h1{font-size:3.2rem;letter-spacing:.14em;font-weight:900;text-indent:.14em}
+header p{margin:14px auto 0;max-width:58ch;font-style:italic;font-size:1.15rem;opacity:.85}
+.orn{display:flex;align-items:center;justify-content:center;gap:16px;margin:22px auto 0;max-width:340px}
+.orn::before,.orn::after{content:"";flex:1;border-top:1px solid currentColor;border-bottom:1px solid currentColor;height:4px}
+.orn i{font-style:normal;font-size:.9rem}
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:var(--bg);margin-top:16px;border-top:1px solid var(--line);border-bottom:3px double var(--line)}
+nav .wrap{display:flex;justify-content:center;overflow-x:auto;padding:0}
+nav button{font:700 .82rem/1 "Playfair Display",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;background:none;color:var(--ink);border:0;border-right:1px solid var(--line);padding:22px 34px;cursor:pointer;white-space:nowrap}
+nav button:first-child{border-left:1px solid var(--line)}
+nav button:hover{background:var(--soft)}
+nav button[aria-selected=true]{background:var(--ink);color:var(--bg)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+nav button:focus-visible{outline-offset:-6px;outline-color:var(--mute)}
+main{padding:64px 0 96px}
+.panel{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:start}
+.panel[hidden]{display:none}
+/* framed tool card */
+.panel>section{border:3px double var(--line);padding:48px 44px 44px;background:var(--bg)}
+.panel>section>h2{font-size:1.9rem;text-align:center}
+.panel>section>h2::after{content:"\25C6";display:block;font-size:.7rem;margin:14px 0 0;letter-spacing:.4em}
+.lede{color:var(--mute);margin:18px auto 32px;max-width:52ch;text-align:center;font-size:1.1rem}
+/* inverted sidebar */
+aside{background:var(--ink);color:var(--bg);padding:44px 40px;position:relative;outline:1px solid var(--ink);outline-offset:6px}
+aside h2{font-size:1.35rem;margin-bottom:6px;padding-bottom:14px;border-bottom:1px solid var(--bg);letter-spacing:.04em}
+aside h2+p{margin-top:20px}
+aside h3{font-size:1.05rem;margin:34px 0 4px;padding-top:24px;border-top:3px double var(--bg)}
+aside p,aside li,aside dd{font-size:1.02rem;color:var(--bg);opacity:.82;margin:0 0 14px}
+aside ul{padding-left:20px;margin:12px 0 0}
+aside dl{margin:0}
+aside dt{font:700 .95rem "Playfair Display",Georgia,serif;color:var(--bg);margin-top:20px}
+aside dd{margin:4px 0 0}
+aside code{font-family:Consolas,"Courier New",monospace;font-size:.82em}
+aside b,aside i{color:var(--bg)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+input[type=text],input[type=file],textarea{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:15px 18px;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:0}
+textarea{width:100%;min-height:160px;resize:vertical}
+input[type=file]{border-style:dashed}
+.btn{font:700 .85rem "Playfair Display",Georgia,serif;letter-spacing:.12em;text-transform:uppercase;padding:15px 28px;background:var(--ink);color:var(--bg);border:1.5px solid var(--line);border-radius:0;cursor:pointer;box-shadow:3px 3px 0 var(--mute)}
+.btn:hover{opacity:.85}.btn:disabled{opacity:.5;cursor:wait}
+.btn:active{box-shadow:none;transform:translate(3px,3px)}
+.btn.alt{background:var(--bg);color:var(--ink)}
+.out{margin-top:40px}
+.out:empty{margin:0}
+.err{font-weight:700;border-left:4px solid var(--line);padding-left:14px}
+.hero{display:flex;gap:28px;align-items:center;border:1.5px solid var(--line);padding:28px;outline:1px solid var(--line);outline-offset:4px;margin:4px}
+.ring{position:relative;width:120px;height:120px;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 2rem/1 "Playfair Display",serif}
+.ring small{font:400 .75rem "Cormorant Garamond",Georgia,serif;color:var(--mute);margin-top:6px}
+.hero h2{font-size:1.3rem;margin-bottom:10px}
+.hero p{margin:0 0 6px;font-size:1rem;color:var(--mute);overflow-wrap:anywhere}
+.verdict{display:inline-block;padding:4px 14px;border:1.5px solid var(--line)}
+.v-safe{background:none}
+.v-warn{border-style:dashed;border-width:2px}
+.v-bad{background:var(--ink);color:var(--bg)}
+.out h3{font-size:1.05rem;margin:40px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+ul.plain{list-style:none;margin:0;padding:0}
+ul.plain li{border:1px solid var(--line);padding:14px 18px;margin-bottom:-1px;font-size:1rem;overflow-wrap:anywhere}
+ul.signals li{border-left:6px solid var(--line)}
+.prov{display:grid;grid-template-columns:140px 1fr;gap:6px 16px;align-items:center}
+.prov small{grid-column:2;color:var(--mute);font-size:.92rem}
+.skipped{color:var(--mute)}
+.bar{height:9px;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--ink)}
+.kv b{display:block;font:700 .78rem "Playfair Display",serif;letter-spacing:.06em;color:var(--mute);margin-bottom:2px}
+.hist li{display:flex;justify-content:space-between;gap:12px}
+.hist span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scorebar{display:grid;grid-template-columns:60px 1fr 64px;gap:12px;align-items:center;margin-top:10px;font-size:.95rem}
+.scorebar span:last-child{text-align:right}
+.tag{display:inline-block;font:700 .72rem "Playfair Display",serif;letter-spacing:.08em;padding:2px 10px;margin-right:10px;border:1.5px solid var(--line)}
+.t-true{background:none}.t-false{background:var(--ink);color:var(--bg)}.t-unclear{border-style:dashed}
+.srcs a{color:var(--ink)}
+.note{font-size:.95rem;color:var(--mute);margin-top:28px;text-align:center;font-style:italic}
+#dfpreview{display:none;max-width:100%;max-height:300px;margin:20px auto 0;border:1px solid var(--line);padding:6px}
+/* media */
+.feed-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.chip{font:inherit;font-size:.95rem;padding:6px 16px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:0;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.reels{height:600px;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;border:1.5px solid var(--line)}
+.reels::-webkit-scrollbar{display:none}
+.reel{height:600px;scroll-snap-align:start;scroll-snap-stop:always;padding:32px;display:flex;flex-direction:column;justify-content:space-between;border-bottom:1px solid var(--line)}
+.reel h3{font-size:1.3rem;margin:18px 0 14px}
+.reel p{margin:0;font-size:1.02rem}
+.meta{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;color:var(--mute)}
+.box{border:1px solid var(--line);padding:16px 18px;font-size:.98rem;margin-top:14px}
+.box b{display:block;margin-bottom:6px;font-family:"Playfair Display",serif;font-size:.9rem}
+.box ul{margin:0;padding-left:20px}
+.reel a{color:var(--ink);font-size:.95rem;align-self:flex-end}
+.sev-High{background:var(--ink);color:var(--bg)}
+.sev-Medium{border-style:dashed}
+#grid{display:none;margin-top:56px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+#grid.on{display:grid}
+.card{border:3px double var(--line);padding:24px;font-size:1rem}
+.card h3{font-size:1.05rem;margin:10px 0}
+@media (max-width:980px){.panel{grid-template-columns:1fr;gap:56px}nav .wrap{justify-content:flex-start}}
+@media (max-width:560px){.wrap{padding:0 16px}.panel>section{padding:32px 20px}aside{padding:32px 24px}header h1{font-size:2.1rem}nav button{padding:18px 20px}.hero{flex-direction:column;text-align:center}}
+@media (prefers-reduced-motion:no-preference){.reels{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<header><svg viewBox="0 0 64 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true"><path d="M4 34 8 10l14 14L32 4l10 20L56 10l4 24Z"/><path d="M4 38h56"/><circle cx="8" cy="7" r="2.5"/><circle cx="32" cy="2" r="2.5"/><circle cx="56" cy="7" r="2.5"/></svg><h1>CYBERSHIELD</h1><p>Check links, images and forwarded messages before you trust them.</p><div class="orn"><i>&#9670;</i></div><p style="font-size:1rem;margin-top:18px">Hackcom 26 &mdash; building a safer digital world</p></header>
+
+<nav aria-label="Tools"><div class="wrap" role="tablist">
+  <button role="tab" id="t-link" aria-controls="p-link" aria-selected="true">Link Checker</button>
+  <button role="tab" id="t-deep" aria-controls="p-deep" aria-selected="false" tabindex="-1">Deepfake Detection</button>
+  <button role="tab" id="t-msg" aria-controls="p-msg" aria-selected="false" tabindex="-1">Message Analyzer</button>
+  <button role="tab" id="t-media" aria-controls="p-media" aria-selected="false" tabindex="-1">Media</button>
+</div></nav>
+
+<main class="wrap">
+
+<!-- LINK CHECKER -->
+<div class="panel" id="p-link" role="tabpanel" aria-labelledby="t-link">
+  <section>
+    <h2>Link Checker</h2>
+    <p class="lede">Paste a link. It is opened in an isolated sandbox and checked against several threat sources, then combined into one safety score.</p>
+    <div class="row">
+      <input id="url" type="text" inputmode="url" placeholder="https://example.com" aria-label="Link to check" autocomplete="off">
+      <button class="btn" id="go">Check link</button>
+    </div>
+    <div class="out" id="result" aria-live="polite"></div>
+    <div id="histbox"></div>
+    <p class="note">A high score means no known threats were found, not a guarantee. Brand-new malicious sites may not be listed yet.</p>
+  </section>
+  <aside>
+    <h2>How it works</h2>
+    <p>Your link is sent to our server, which does two things at once: it asks threat databases whether the address is known to be bad, and it opens the page inside a throwaway browser (a sandbox) so nothing touches your device. The findings are merged into a single score from 0 to 100.</p>
+    <p>Built with a Python backend on Modal, a headless browser for the sandbox, and external services such as urlscan.io for reputation and screenshots.</p>
+    <h3>What each result means</h3>
+    <dl>
+      <dt>Safety score</dt><dd>0 to 100. Higher means fewer warning signs. It is a risk estimate, not a promise.</dd>
+      <dt>Verdict</dt><dd><b>Looks safe</b>: nothing alarming found. <b>Be careful</b>: some warning signs, so avoid entering personal data. <b>Likely dangerous</b>: strong evidence of phishing, malware or fraud. Do not open it.</dd>
+      <dt>Sources answered / Confidence</dt><dd>Not every database replies every time. Fewer answers means lower confidence in the score.</dd>
+      <dt>Why this score</dt><dd>The plain-language reasons behind the number, such as a new domain, a login form on an unrelated site or a listing in a blocklist.</dd>
+      <dt>Threat databases</dt><dd>One bar per source. A longer bar means that source sees more risk. <i>Skipped</i> or <i>Error</i> means it gave no opinion, which is not the same as safe.</dd>
+      <dt>Final destination</dt><dd>Where the link really ends up after redirects. Short links often hide the true address.</dd>
+      <dt>Password field</dt><dd>Yes means the page asks for a password. Be suspicious if you did not expect a login.</dd>
+      <dt>Automatic downloads</dt><dd>Files the page tried to download by itself. Safe sites rarely do this.</dd>
+      <dt>Domains contacted</dt><dd>Other servers the page talked to. Many unknown domains can mean trackers or malicious scripts.</dd>
+      <dt>Trend and recent checks</dt><dd>Compares with your last check of the same link. A score that drops can mean a site was newly flagged.</dd>
+    </dl>
+  </aside>
+</div>
+
+<!-- DEEPFAKE -->
+<div class="panel" id="p-deep" role="tabpanel" aria-labelledby="t-deep" hidden>
+  <section>
+    <h2>Deepfake Detection <span class="tag">Beta</span></h2>
+    <p class="lede">Upload an image to check whether it looks real or AI-generated. Results are probabilities, not proof, and can be wrong.</p>
+    <p class="note" style="margin:0 0 16px">Model: <code id="dfmodel">prithivMLmods/Deepfake-Detect-Siglip2</code></p>
+    <div class="row">
+      <input id="dffile" type="file" accept="image/*" aria-label="Image to analyze">
+      <button class="btn" id="dfgo">Analyze image</button>
+    </div>
+    <img id="dfpreview" alt="Preview of the selected image">
+    <div class="out" id="dfresult" aria-live="polite"></div>
+  </section>
+  <aside>
+    <h2>How it works</h2>
+    <p>The image is uploaded to a server that runs an image classifier called <code>Deepfake-Detect-Siglip2</code>, built on Google&rsquo;s SigLIP2 vision model and hosted on Modal. It looks at the pixels for patterns typical of AI-generated or manipulated faces and scenes, then returns a probability for each class.</p>
+    <h3>Reading the result</h3>
+    <dl>
+      <dt>Label</dt><dd>The class with the highest probability: <i>Real</i> or <i>Fake</i>.</dd>
+      <dt>Confidence ring</dt><dd>How sure the model is about that label. Below about 70% treat it as a coin toss.</dd>
+      <dt>Score bars</dt><dd>The probability given to each class. They add up to 100%.</dd>
+    </dl>
+    <h3>Limits</h3>
+    <ul>
+      <li>Compressed, cropped or screenshotted images lower accuracy.</li>
+      <li>New generators can fool older detectors.</li>
+      <li>Use it as one clue, together with the source and context of the image.</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- MESSAGE ANALYZER -->
+<div class="panel" id="p-msg" role="tabpanel" aria-labelledby="t-msg" hidden>
+  <section>
+    <h2>Viral WhatsApp &amp; SMS Message Analyzer</h2>
+    <p class="lede">Paste a forwarded WhatsApp message or an SMS. An AI model with live web search checks the claims and looks for scam and hoax patterns.</p>
+    <textarea id="msgtext" maxlength="4000" placeholder="Paste the message here, e.g. &quot;Forward this to 10 people or your account will be blocked...&quot;" aria-label="Message to verify"></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn" id="msggo" style="flex:1">Verify message</button></div>
+    <div class="out" id="msgresult" aria-live="polite"></div>
+  </section>
+  <aside>
+    <h2>How it works</h2>
+    <p>Your text is sent to our server, which passes it to a large language model through OpenRouter. The model is told to act as a fact-checker, to search the live web for any concrete claim (offers, health tips, government schemes, news) and to answer in a fixed structure. It is also told to ignore any instructions hidden inside the message itself.</p>
+    <h3>Reading the result</h3>
+    <dl>
+      <dt>Verdict</dt><dd>Looks genuine, Could not verify, Misleading, or Likely fake or scam.</dd>
+      <dt>Credibility</dt><dd>0 to 100. 100 means fully credible.</dd>
+      <dt>Red flags</dt><dd>Scam habits found: urgency, &ldquo;forward to 10 people&rdquo;, odd links, requests for OTP or money.</dd>
+      <dt>Claims checked</dt><dd>Each claim marked true, false or unclear with a one-line reason.</dd>
+      <dt>Sources</dt><dd>Pages the model used. Open them and judge for yourself.</dd>
+    </dl>
+    <p>AI can make mistakes. For money, health or legal matters, confirm on an official website.</p>
+  </aside>
+</div>
+
+<!-- MEDIA -->
+<div class="panel" id="p-media" role="tabpanel" aria-labelledby="t-media" hidden>
+  <section>
+    <h2>Cyber safety media</h2>
+    <p class="lede">Short cards on common scams, with the red flags to spot and what to do instead.</p>
+    <div class="feed-bar">
+      <div class="row">
+        <button class="btn alt" id="prev">Previous</button>
+        <button class="btn" id="next">Next</button>
+      </div>
+      <button class="btn alt" id="gridbtn" aria-expanded="false">Show grid view</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="reels" id="reels" tabindex="0" aria-label="Scam advisories"></div>
+  </section>
+  <aside>
+    <h2>How it works</h2>
+    <p>Each card is a short advisory drawn from public guidance by Indian cyber-safety bodies: I4C (cybercrime.gov.in), RBI and CERT-In. Scroll the feed or use the buttons, filter by category, or switch to grid view to see every advisory at once.</p>
+    <h3>What the labels mean</h3>
+    <dl>
+      <dt>Risk level</dt><dd><b>High</b> scams steal money or accounts quickly. <b>Medium</b> scams spread or collect data first.</dd>
+      <dt>Source rating</dt><dd>Our own editorial score for how authoritative the publisher is. It is not a measure of the scam itself.</dd>
+      <dt>Red flags</dt><dd>Signs you can spot in the message or call.</dd>
+      <dt>How to stay safe</dt><dd>The one action that protects you.</dd>
+      <dt>Recurring / Emerging</dt><dd>Recurring scams keep returning. Emerging ones are newer, often AI-driven.</dd>
+    </dl>
+    <p>Spotted a scam? Report it at cybercrime.gov.in or call 1930.</p>
+  </aside>
+</div>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const RING=2*Math.PI*52;
+const ring=(frac,num,label)=>`<div class="ring" role="img" aria-label="${esc(label)}"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--soft)" stroke-width="10"/><circle cx="60" cy="60" r="52" fill="none" stroke="var(--ink)" stroke-width="10" stroke-dasharray="${RING}" stroke-dashoffset="${RING*(1-frac)}"/></svg><div class="num">${num}<small>${esc(label.split(" ")[0].toLowerCase())}</small></div></div>`;
+const vcls=v=>v==="safe"?"v-safe":v==="suspicious"?"v-warn":"v-bad";
+
+/* ---------- tabs ---------- */
+const TABS=["link","deep","msg","media"];
+function show(name,focus){
+  if(!TABS.includes(name))name="link";
+  TABS.forEach(t=>{
+    const on=t===name;
+    $("p-"+t).hidden=!on;
+    const b=$("t-"+t);b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;
+  });
+  if(focus)$("t-"+name).focus();
+  history.replaceState(null,"","#"+name);
+}
+TABS.forEach((t,i)=>{
+  const b=$("t-"+t);
+  b.addEventListener("click",()=>show(t));
+  b.addEventListener("keydown",e=>{
+    const d=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0;
+    if(d)show(TABS[(i+d+TABS.length)%TABS.length],true);
+  });
+});
+show(location.hash.slice(1));
+
+/* ---------- link checker ---------- */
+// One Modal backend serves the link checker and the message analyzer.
+const LINK_URL="https://modalacc77--link-checker-web.us-east.modal.run";
+async function check(){
+  const url=$("url").value.trim(),out=$("result"),btn=$("go");
+  if(!/^https?:\/\//i.test(url)){out.innerHTML='<p class="err">Enter a full link starting with http:// or https://</p>';return}
+  btn.disabled=true;btn.textContent="Checking...";
+  out.innerHTML="<p>Opening the link in a sandbox and asking the threat databases. This can take up to 40 seconds.</p>";
+  try{
+    const r=await fetch(LINK_URL+"/check?url="+encodeURIComponent(url));
+    if(!r.ok)throw new Error("Server returned "+r.status+(r.status===400?" (link not allowed)":""));
+    renderLink(await r.json());loadHistory();
+  }catch(e){out.innerHTML='<p class="err">Could not check the link: '+esc(e.message)+"</p>"}
+  finally{btn.disabled=false;btn.textContent="Check link"}
+}
+function renderLink(d){
+  const title={safe:"Looks safe",suspicious:"Be careful",dangerous:"Likely dangerous"}[d.verdict];
+  const answered=d.providers.filter(p=>p.status==="ok").length;
+  let trend="";
+  if(d.previous_score!=null){
+    const diff=d.score-d.previous_score;
+    trend=diff===0?"Same score as last check.":`Last checked ${new Date(d.previous_at*1000).toLocaleString()}: ${d.previous_score}. Now ${diff>0?"up":"down"} ${Math.abs(diff)}.`;
+  }
+  const s=d.sandbox||{};
+  const us=d.providers.find(p=>p.id==="urlscan"&&p.screenshot);
+  const shot=us?`<li class="kv"><b>Preview from urlscan.io</b><img src="${esc(us.screenshot)}" alt="Screenshot of the page" style="max-width:100%;margin-top:6px;border:1px solid var(--line)"><br><a href="${esc(us.report)}" target="_blank" rel="noopener noreferrer" style="color:var(--ink)">Full urlscan report</a></li>`:"";
+  const sb=s.error?`<li class="err">Sandbox could not open the page: ${esc(s.error)}</li>`:
+    `<li class="kv"><b>Final destination</b>${esc(s.final_url)}</li>
+     <li class="kv"><b>Page title</b>${esc(s.title||"none")}</li>
+     <li class="kv"><b>Password field</b>${s.has_password_field?"Yes":"No"}</li>
+     <li class="kv"><b>Automatic downloads</b>${(s.downloads||[]).length?esc(s.downloads.join(", ")):"None"}</li>
+     <li class="kv"><b>Domains contacted</b>${esc((s.domains_contacted||[]).join(", ")||"none")}</li>`;
+  $("result").innerHTML=`
+    <div class="hero">${ring(d.score/100,d.score,"Safety score "+d.score+" out of 100")}
+      <div><h2><span class="verdict ${vcls(d.verdict)}">${title}</span></h2>
+        <p>${esc(d.url)}</p>
+        <p>${answered} of ${d.providers.length} sources answered. Confidence: ${esc(d.confidence)}.</p>
+        ${trend?`<p>${esc(trend)}</p>`:""}</div></div>
+    ${d.signals.length?`<h3>Why this score</h3><ul class="plain signals">${d.signals.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+    <h3>Threat databases</h3>
+    <ul class="plain">${d.providers.map(p=>p.status!=="ok"
+      ?`<li class="prov skipped"><b>${esc(p.name)}</b><span>${p.status==="error"?"Error":"Skipped"}</span><small>${esc(p.detail)}</small></li>`
+      :`<li class="prov"><b>${esc(p.name)}</b><div class="bar"><i style="width:${Math.max(p.risk,2)}%"></i></div><small>${esc(p.detail)}</small></li>`).join("")}</ul>
+    <h3>Sandbox visit</h3><ul class="plain">${shot}${sb}</ul>`;
+}
+async function loadHistory(){
+  let items;
+  try{items=await(await fetch(LINK_URL+"/history")).json()}catch{return}
+  if(!Array.isArray(items)||!items.length){$("histbox").innerHTML="";return}
+  $("histbox").innerHTML=`<div class="out"><h3>Recent checks</h3><ul class="plain hist">${items.slice(0,10).map(h=>`<li><span>${esc(h.url)}</span><b>${h.score}</b></li>`).join("")}</ul></div>`;
+}
+$("go").addEventListener("click",check);
+$("url").addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+
+/* ---------- deepfake ---------- */
+const DF_URL="https://modalacc77--deepfake-detect-deepfakedetector-web.modal.run";
+fetch(DF_URL+"/health").then(r=>r.json()).then(h=>{if(h&&h.model)$("dfmodel").textContent=h.model}).catch(()=>{});
+$("dffile").addEventListener("change",()=>{
+  const f=$("dffile").files[0],img=$("dfpreview");
+  $("dfresult").innerHTML="";
+  if(!f){img.style.display="none";return}
+  img.src=URL.createObjectURL(f);img.style.display="block";
+});
+async function analyze(){
+  const f=$("dffile").files[0],out=$("dfresult"),btn=$("dfgo");
+  if(!f){out.innerHTML='<p class="err">Choose an image first.</p>';return}
+  if(!f.type.startsWith("image/")){out.innerHTML='<p class="err">That file is not an image.</p>';return}
+  if(f.size>10*1024*1024){out.innerHTML='<p class="err">Image is larger than 10 MB.</p>';return}
+  btn.disabled=true;btn.textContent="Analyzing...";
+  out.innerHTML="<p>Sending the image to the model. The first request may take a while if the server is waking up.</p>";
+  try{
+    const fd=new FormData();fd.append("file",f);
+    const r=await fetch(DF_URL+"/predict",{method:"POST",body:fd});
+    if(!r.ok)throw new Error("Server returned "+r.status);
+    renderDeepfake(await r.json());
+  }catch(e){out.innerHTML='<p class="err">Could not analyze the image: '+esc(e.message)+' (if this says "Failed to fetch", the server may need CORS enabled)</p>'}
+  finally{btn.disabled=false;btn.textContent="Analyze image"}
+}
+function renderDeepfake(d){
+  const fake=String(d.label).toLowerCase()==="fake";
+  const pct=Math.round(d.confidence*1000)/10,sc=d.scores||{};
+  const bars=Object.keys(sc).sort((a,b)=>sc[b]-sc[a]).map(k=>`<div class="scorebar"><b>${esc(k)}</b><div class="bar"><i style="width:${Math.max(sc[k]*100,2)}%"></i></div><span>${(sc[k]*100).toFixed(2)}%</span></div>`).join("");
+  $("dfresult").innerHTML=`<div class="hero">${ring(d.confidence,Math.round(pct)+"%","Confidence "+pct+" percent")}
+    <div style="flex:1;min-width:0"><h2><span class="verdict ${fake?"v-bad":"v-safe"}">${fake?"Likely fake / AI-generated":"Likely real"}</span></h2>
+    <p>Predicted label: <b>${esc(d.label)}</b></p>${bars}</div></div>`;
+}
+$("dfgo").addEventListener("click",analyze);
+
+/* ---------- message analyzer ---------- */
+// The OpenRouter key lives in the Modal secret. The page only talks to our backend.
+async function verifyMessage(){
+  const text=$("msgtext").value.trim(),out=$("msgresult"),btn=$("msggo");
+  if(text.length<10){out.innerHTML='<p class="err">Paste a longer message (at least 10 characters).</p>';return}
+  btn.disabled=true;btn.textContent="Verifying...";
+  out.innerHTML="<p>Checking the claims. This can take up to 30 seconds.</p>";
+  try{
+    const r=await fetch(LINK_URL+"/verify-message",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error((typeof j.detail==="string"&&j.detail)||"Server returned "+r.status);
+    renderMsg(j.result,j.sources||[]);
+  }catch(e){out.innerHTML='<p class="err">Could not verify the message: '+esc(e.message)+"</p>"}
+  finally{btn.disabled=false;btn.textContent="Verify message"}
+}
+function renderMsg(d,srcs){
+  const map={likely_true:["v-safe","Looks genuine"],unverified:["v-warn","Could not verify"],misleading:["v-warn","Misleading"],likely_fake:["v-bad","Likely fake or scam"]};
+  const [cls,title]=map[d.verdict]||map.unverified;
+  const score=Math.max(0,Math.min(100,Math.round(Number(d.credibility)||0)));
+  const tc={"true":"t-true","false":"t-false"};
+  const sig=Array.isArray(d.signals)?d.signals:[],cl=Array.isArray(d.claims)?d.claims:[];
+  $("msgresult").innerHTML=`<div class="hero">${ring(score/100,score,"Credibility "+score+" out of 100")}
+    <div style="flex:1;min-width:0"><h2><span class="verdict ${cls}">${title}</span></h2><p>${esc(d.summary)}</p></div></div>
+    ${sig.length?`<h3>Red flags</h3><ul class="plain signals">${sig.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+    ${cl.length?`<h3>Claims checked</h3><ul class="plain">${cl.map(c=>{const a=String(c.assessment).toLowerCase();return `<li><span class="tag ${tc[a]||"t-unclear"}">${esc(a)}</span>${esc(c.claim)}<br><small style="color:var(--mute)">${esc(c.note)}</small></li>`}).join("")}</ul>`:""}
+    ${srcs.length?`<h3>Sources</h3><ul class="plain srcs">${srcs.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title||s.url)}</a></li>`).join("")}</ul>`:""}
+    ${d.advice?`<h3>What to do</h3><ul class="plain"><li>${esc(d.advice)}</li></ul>`:""}
+    <p class="note">AI analysis can be wrong. Check important claims with official sources before acting or forwarding.</p>`;
+}
+$("msggo").addEventListener("click",verifyMessage);
+
+/* ---------- media ---------- */
+const ARTICLES=[
+ {title:"Fake electricity disconnection SMS asks you to call an 'officer'",category:"Scam Alert",severity:"High",source:"I4C / cybercrime.gov.in",credibility:90,published:"Recurring scam",
+  summary:"Scammers send SMS saying power will be cut tonight unless you update KYC or call a number. The call or link leads to remote-access apps or payment theft.",
+  warnings:["Disconnection threat with a same-night deadline","Personal mobile number instead of official helpline","Link on a strange domain such as .xyz"],
+  safety_tip:"Never call numbers from such SMS. Check your bill on the official app or portal of your electricity board.",link:"https://cybercrime.gov.in"},
+ {title:"Fake bank KYC links and APK files steal login details",category:"Phishing",severity:"High",source:"RBI",credibility:95,published:"Recurring scam",
+  summary:"Messages claim your account will be blocked and push a link or an APK 'security update'. Fake pages copy bank login screens; APKs can read your SMS and OTPs.",
+  warnings:["Account suspension threat","Asks you to install an APK outside the Play Store","Domain is not your bank's official one"],
+  safety_tip:"Banks do not ask for KYC via links in SMS. Open your bank's official app yourself, or visit the branch.",link:"https://www.rbi.org.in"},
+ {title:"Free recharge and free laptop forwards spread on WhatsApp",category:"Scam Alert",severity:"Medium",source:"CERT-In",credibility:92,published:"Recurring scam",
+  summary:"Viral forwards promise free recharge or laptops 'from the Government' and ask you to forward to many groups. They harvest data and spread the scam.",
+  warnings:["Too-good-to-be-true free offer","Forward to 10 groups","Shortened link hiding the real site"],
+  safety_tip:"Check government schemes only on official .gov.in sites. Do not forward, and report the message in WhatsApp.",link:"https://www.cert-in.org.in"},
+ {title:"AI voice cloning used in 'relative in trouble' calls",category:"Deepfake / AI",severity:"High",source:"CERT-In",credibility:92,published:"Emerging threat",
+  summary:"Criminals can copy a voice from a few seconds of audio and call family members asking for urgent money.",
+  warnings:["Urgent request for money","Caller asks you to keep it secret","Unknown number or poor line quality"],
+  safety_tip:"Hang up and call the person back on their saved number. Agree on a family code word for emergencies.",link:"https://www.cert-in.org.in"},
+ {title:"Oversharing on social media makes social engineering easier",category:"Privacy Risk",severity:"Medium",source:"CERT-In",credibility:92,published:"Advisory",
+  summary:"Public birthdays, workplaces, and travel plans help attackers craft believable messages and guess security answers.",
+  warnings:["Public profile showing phone and email","Unknown friend requests","Quizzes asking personal details"],
+  safety_tip:"Make profiles private, review app permissions, and turn on two-factor authentication everywhere.",link:"https://www.cert-in.org.in"}
+];
+const CATS=["All","Scam Alert","Phishing","Deepfake / AI","Privacy Risk"];
+$("chips").innerHTML=CATS.map((c,i)=>`<button class="chip" data-f="${esc(c)}" aria-pressed="${i===0}">${esc(c)}</button>`).join("");
+$("reels").innerHTML=ARTICLES.map(a=>`<article class="reel" data-cat="${esc(a.category)}">
+  <div><div class="meta"><span class="tag sev-${esc(a.severity)}">${esc(a.severity)} risk: ${esc(a.category)}</span><span>${esc(a.published)}</span></div>
+  <h3>${esc(a.title)}</h3><p>${esc(a.summary)}</p>
+  <p class="note" style="margin-top:10px">${esc(a.source)}: ${esc(a.credibility)}/100 source rating</p></div>
+  <div><div class="box"><b>Red flags</b><ul>${a.warnings.map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div>
+  <div class="box"><b>How to stay safe</b>${esc(a.safety_tip)}</div></div>
+  <a href="${esc(a.link)}" target="_blank" rel="noopener noreferrer">Open source site</a></article>`).join("");
+const g=document.createElement("div");g.id="grid";
+g.innerHTML=ARTICLES.map(a=>`<div class="card" data-cat="${esc(a.category)}"><div class="meta"><span>${esc(a.source)} (${esc(a.credibility)}/100)</span><span>${esc(a.published)}</span></div><h3>${esc(a.title)}</h3><p>${esc(a.summary)}</p><div class="box"><b>Safety tip</b>${esc(a.safety_tip)}</div></div>`).join("");
+$("p-media").after(g);
+const step=d=>$("reels").scrollBy({top:d*600});
+$("prev").onclick=()=>step(-1);$("next").onclick=()=>step(1);
+$("gridbtn").onclick=()=>{
+  const on=g.classList.toggle("on");
+  $("gridbtn").textContent=on?"Hide grid view":"Show grid view";
+  $("gridbtn").setAttribute("aria-expanded",on);
+  if(on)g.scrollIntoView({behavior:"smooth"});
+};
+$("chips").addEventListener("click",e=>{
+  const b=e.target.closest("[data-f]");if(!b)return;
+  const f=b.dataset.f;
+  document.querySelectorAll("[data-cat]").forEach(el=>el.style.display=(f==="All"||el.dataset.cat===f)?"":"none");
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));
+  $("reels").scrollTo({top:0});
+});
+/* grid belongs to the media tab only */
+new MutationObserver(()=>{if($("p-media").hidden)g.style.display="none";else g.style.display=""}).observe($("p-media"),{attributes:true,attributeFilter:["hidden"]});
+if($("p-media").hidden)g.style.display="none";
+</script>
+</body>
+</html>
